@@ -22,6 +22,8 @@ import java.util.Arrays;
  */
 public class Merge
 {
+    public Merge() { }
+    
     /**
      * Merges an array that has been divided logical into two sorted
      * sub-arrays.  Sub-array one is a[lo..mid] and sub-array two
@@ -35,7 +37,7 @@ public class Merge
     public static void merge(int[] aux, int[] a, int lo, int mid, int hi)
     {
         int N = a.length;
-        for (int i = 0; i < N; i++)
+        for (int i = lo; i <= hi; i++)
             aux[i] = a[i];
         
         int i = lo, j = mid + 1;
@@ -75,23 +77,36 @@ public class Merge
     
     public static void main(String[] args)
     {
-        int N = 100000;
+        int N = 512000;
         int[] a1 = new int[N];
-        int[] a2 = new int[N];
+        int[] a2;
+        int[] a3;
         
-        fillRandomly(a1);
-        fillRandomly(a2);
-        
-        Stopwatch sw = new Stopwatch();
-        Merge.sortBottomUp(a1);
-        StdOut.println("Bottom Up mergesort = " + sw.elapsedTime());
-        
-        sw = new Stopwatch();
-        Merge.sortTopDown(a2);
-        StdOut.println("Top Down mergesort = " + sw.elapsedTime());
-        
-        StdOut.println(isSorted(a1));
-        StdOut.println(isSorted(a2));
+        while (true) 
+        {
+            fillRandomly(a1);
+            a2 = a1.clone();
+            a3 = a2.clone();
+            
+            StdOut.println("Size = " + N);
+            StdOut.println();
+            StdOut.println();
+            
+            Stopwatch sw = new Stopwatch();
+            Merge.sortBottomUp(a1);
+            StdOut.println("Bottom Up mergesort = " + sw.elapsedTime());
+            
+            sw = new Stopwatch();
+            Merge.sortTopDown(a2);
+            StdOut.println("Top Down mergesort = " + sw.elapsedTime());
+
+            sw = new Stopwatch();
+            Merge.sortTopDown(a3);
+            StdOut.println("Java system sort = " + sw.elapsedTime());
+            
+            N = 2*N; // Double size
+            a1 = new int[N];
+        }
     }
     
     /**
