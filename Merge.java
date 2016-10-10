@@ -22,6 +22,8 @@ import java.util.Arrays;
  */
 public class Merge
 {
+    private static final int MAX_INT = 1000000;
+    
     public Merge() { }
     
     /**
@@ -84,13 +86,12 @@ public class Merge
         
         while (true) 
         {
-            fillRandomly(a1);
-            a2 = a1.clone();
-            a3 = a2.clone();
+            fillRandomly(a1);  
+            a2 = a1.clone();    // Shallow copy a1 into a2
+            a3 = a1.clone();
             
             StdOut.println("Size = " + N);
-            StdOut.println();
-            StdOut.println();
+            StdOut.println("-----------------------------");
             
             Stopwatch sw = new Stopwatch();
             Merge.sortBottomUp(a1);
@@ -98,11 +99,13 @@ public class Merge
             
             sw = new Stopwatch();
             Merge.sortTopDown(a2);
-            StdOut.println("Top Down mergesort = " + sw.elapsedTime());
+            StdOut.println("Top Down mergesort  = " + sw.elapsedTime());
 
             sw = new Stopwatch();
             Merge.sortTopDown(a3);
-            StdOut.println("Java system sort = " + sw.elapsedTime());
+            StdOut.println("Java system sort    = " + sw.elapsedTime());
+            StdOut.println();
+            StdOut.println();
             
             N = 2*N; // Double size
             a1 = new int[N];
@@ -121,12 +124,18 @@ public class Merge
     public static boolean rightArrayExhausted(int right, int endpoint)
     { return right > endpoint; }  
     
+    /**
+     * Fills an array with random integers.
+     */
     public static void fillRandomly(int[] a)
     {
         for (int i = 0; i < a.length; i++)
-            a[i] = StdRandom.uniform(-100000, 100000);
+            a[i] = StdRandom.uniform(-MAX_INT, MAX_INT);
     }
     
+    /**
+     * Can be used to ensure array elements are not out of order.
+     */
     public static boolean isSorted(int[] a)
     {
         for (int i = 1; i < a.length; i++)
